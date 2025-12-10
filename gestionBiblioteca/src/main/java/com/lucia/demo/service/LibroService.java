@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.lucia.demo.exception.LibroNoEncontradoException;
 import com.lucia.demo.modelo.Libro;
 import com.lucia.demo.repository.LibroRepository;
 
@@ -21,6 +22,7 @@ public class LibroService {
     }
 
     public Libro obtenerLibroPorId(Long id) {
-        return libroRepository.findById(id).orElse(null);
+        return libroRepository.findById(id)
+                .orElseThrow(() -> new LibroNoEncontradoException("Libro con id " + id + " no encontrado"));
     }
 }

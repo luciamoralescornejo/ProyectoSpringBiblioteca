@@ -4,7 +4,14 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "libro")
@@ -19,12 +26,17 @@ public class Libro {
 
     @Column(nullable = false)
     private String autor;
+
+    @Column(nullable = false, unique = true, length = 13)
+    private String isbn;
+
+    private String categoria;
+
     @JsonIgnore
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Prestamo> prestamos;
 
-    // getters y setters
-
+    // Getters y setters
     public Long getId() {
         return id;
     }
@@ -47,6 +59,22 @@ public class Libro {
 
     public void setAutor(String autor) {
         this.autor = autor;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public List<Prestamo> getPrestamos() {
