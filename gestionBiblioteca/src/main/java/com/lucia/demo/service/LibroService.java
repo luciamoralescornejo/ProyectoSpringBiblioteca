@@ -17,12 +17,25 @@ public class LibroService {
         this.libroRepository = libroRepository;
     }
 
+    // Listar todos los libros
     public List<Libro> listarLibros() {
         return libroRepository.findAll();
     }
 
+    // Obtener un libro por su ID
     public Libro obtenerLibroPorId(Long id) {
         return libroRepository.findById(id)
                 .orElseThrow(() -> new LibroNoEncontradoException("Libro con id " + id + " no encontrado"));
+    }
+
+    // Guardar o actualizar un libro
+    public Libro guardarLibro(Libro libro) {
+        return libroRepository.save(libro);
+    }
+
+    // Eliminar un libro por su ID
+    public void eliminarLibro(Long id) {
+        Libro libro = obtenerLibroPorId(id); // Lanza excepción si no existe
+        libroRepository.delete(libro);
     }
 }

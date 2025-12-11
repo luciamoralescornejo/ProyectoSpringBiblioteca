@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.lucia.demo.exception.SocioNoEncontradoException;
 import com.lucia.demo.modelo.Socio;
 import com.lucia.demo.repository.SocioRepository;
 
@@ -16,11 +17,27 @@ public class SocioService {
         this.socioRepository = socioRepository;
     }
 
+    // LISTAR SOCIOS
     public List<Socio> listarSocios() {
         return socioRepository.findAll();
     }
 
+    // OBTENER UNO POR ID
     public Socio obtenerSocioPorId(Long id) {
-        return socioRepository.findById(id).orElse(null);
+        return socioRepository.findById(id)
+                .orElseThrow(() -> new SocioNoEncontradoException("Socio con id " + id + " no encontrado"));
+    }
+
+    // GUARDAR (NUEVO O EDITADO)
+    public Socio guardarSocio(Socio socio) {
+        return socioRepository.save(socio);
+    }
+
+    // ELIMINAR
+    public void eliminarSocio(Long id) {
+        if (!socioRepository.existsById(id)) {
+            throw new SocioNoEncontradoException("No existe socio con id " + id);
+        }
+        socioRepository.deleteById(id);
     }
 }

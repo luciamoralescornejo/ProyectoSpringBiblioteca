@@ -6,18 +6,37 @@
 </head>
 <body>
 <h1>Lista de Libros</h1>
+
 <a th:href="@{/}">Volver al menú</a>
+&nbsp;|&nbsp;
+<a th:href="@{/libros/nuevo}">Nuevo Libro</a>
+
 <table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Título</th>
-        <th>Autor</th>
-    </tr>
-    <tr th:each="libro : ${libros}">
-        <td th:text="${libro.id}"></td>
-        <td th:text="${libro.titulo}"></td>
-        <td th:text="${libro.autor}"></td>
-    </tr>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>ISBN</th>
+            <th>Categoría</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="libro : ${libros}">
+            <td th:text="${libro.id}"></td>
+            <td th:text="${libro.titulo}"></td>
+            <td th:text="${libro.autor}"></td>
+            <td th:text="${libro.isbn}"></td>
+            <td th:text="${libro.categoria}"></td>
+            <td>
+                <a th:href="@{/libros/editar/{id}(id=${libro.id})}">Editar</a>
+                &nbsp;|&nbsp;
+                <a th:href="@{/libros/eliminar/{id}(id=${libro.id})}" 
+                   onclick="return confirm('¿Estás seguro de eliminar este libro?');">Eliminar</a>
+            </td>
+        </tr>
+    </tbody>
 </table>
 </body>
 </html>
