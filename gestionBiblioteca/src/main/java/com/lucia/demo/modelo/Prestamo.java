@@ -28,11 +28,16 @@ public class Prestamo {
     @Column(nullable = false)
     private Estado estado;
 
-    // Se asegura que siempre haya fecha al guardar
+    @Column(name = "fecha_inicio", nullable = false)
+    private LocalDate fechaInicio;
+
     @PrePersist
     public void prePersist() {
         if (fechaPrestamo == null) {
             fechaPrestamo = LocalDate.now();
+        }
+        if (fechaInicio == null) {
+            fechaInicio = LocalDate.now(); // inicializamos fecha_inicio
         }
     }
 
