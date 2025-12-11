@@ -2,12 +2,17 @@ package com.lucia.demo.service;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.lucia.demo.modelo.Prestamo;
 import com.lucia.demo.repository.PrestamoRepository;
 
+/**
+ * Servicio que gestiona la lógica de negocio de los préstamos.
+ * Permite listar, guardar, obtener, eliminar y devolver préstamos.
+ * Calcula fechas por defecto y actualiza el estado del préstamo al devolverlo.
+ * Utiliza PrestamoRepository para persistencia en la base de datos.
+ * Se marca con @Service para la inyección automática en Spring.
+ */
 @Service
 public class PrestamoService {
 

@@ -2,17 +2,16 @@ package com.lucia.demo.modelo;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
+/**
+ * Entidad que representa un socio de la biblioteca.
+ * Mapea la tabla correspondiente en la base de datos con JPA.
+ * Contiene atributos como nombre, email, fecha de fin de penalización y
+ * préstamos.
+ * Mantiene una relación uno a muchos con Prestamo, ignorada en JSON.
+ */
 @Entity
 public class Socio {
 
@@ -73,5 +72,4 @@ public class Socio {
     public void setPrestamos(List<Prestamo> prestamos) {
         this.prestamos = prestamos;
     }
-
 }

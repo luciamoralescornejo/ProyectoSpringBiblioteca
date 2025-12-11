@@ -1,13 +1,20 @@
 package com.lucia.demo.service;
 
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
 import com.lucia.demo.exception.LibroNoEncontradoException;
 import com.lucia.demo.modelo.Libro;
 import com.lucia.demo.repository.LibroRepository;
 
+/**
+ * Servicio que gestiona la lógica de negocio específica de libros.
+ * Permite listar, obtener, guardar, actualizar y eliminar libros.
+ * Lanza LibroNoEncontradoException si se intenta acceder a un libro
+ * inexistente.
+ * Utiliza LibroRepository para realizar operaciones de persistencia en la base
+ * de datos.
+ * Se marca con @Service para la inyección automática en Spring.
+ */
 @Service
 public class LibroService {
 

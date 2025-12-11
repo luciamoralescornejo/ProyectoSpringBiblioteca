@@ -1,18 +1,15 @@
 package com.lucia.demo.modelo;
 
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-
+/**
+ * Entidad que representa un libro en la biblioteca.
+ * Mapea la tabla "libro" en la base de datos con JPA.
+ * Contiene atributos como título, autor, ISBN, categoría y préstamos.
+ * La relación con Prestamo es uno a muchos, ignorada en JSON.
+ */
 @Entity
 @Table(name = "libro")
 public class Libro {
