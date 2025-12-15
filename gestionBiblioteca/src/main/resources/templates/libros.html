@@ -3,40 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <title>Libros</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .buttons {
+            margin-bottom: 30px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            color: #fff;
+            background: #e67e22;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            margin-right: 10px;
+        }
+
+        .buttons a:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        table {
+            width: 100%;
+            max-width: 900px;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        thead {
+            background: #e67e22;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background: #ffe6cc;
+        }
+
+        td a {
+            color: #e67e22;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            tbody tr {
+                margin-bottom: 20px;
+                background: white;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                border-radius: 10px;
+                padding: 15px;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 10px;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #2c3e50;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>Lista de Libros</h1>
+    <h1>Lista de Libros</h1>
 
-<a th:href="@{/}">Volver al menú</a>
-&nbsp;|&nbsp;
-<a th:href="@{/libros/nuevo}">Nuevo Libro</a>
+    <div class="buttons">
+        <a th:href="@{/}">Volver al menú</a>
+        <a th:href="@{/libros/nuevo}">Nuevo Libro</a>
+    </div>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>ISBN</th>
-            <th>Categoría</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="libro : ${libros}">
-            <td th:text="${libro.id}"></td>
-            <td th:text="${libro.titulo}"></td>
-            <td th:text="${libro.autor}"></td>
-            <td th:text="${libro.isbn}"></td>
-            <td th:text="${libro.categoria}"></td>
-            <td>
-                <a th:href="@{/libros/editar/{id}(id=${libro.id})}">Editar</a>
-                &nbsp;|&nbsp;
-                <a th:href="@{/libros/eliminar/{id}(id=${libro.id})}" 
-                   onclick="return confirm('¿Estás seguro de eliminar este libro?');">Eliminar</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>ISBN</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="libro : ${libros}">
+                <td data-label="ID" th:text="${libro.id}"></td>
+                <td data-label="Título" th:text="${libro.titulo}"></td>
+                <td data-label="Autor" th:text="${libro.autor}"></td>
+                <td data-label="ISBN" th:text="${libro.isbn}"></td>
+                <td data-label="Categoría" th:text="${libro.categoria}"></td>
+                <td data-label="Acciones">
+                    <a th:href="@{/libros/editar/{id}(id=${libro.id})}">Editar</a>
+                    <a th:href="@{/libros/eliminar/{id}(id=${libro.id})}" 
+                       onclick="return confirm('¿Estás seguro de eliminar este libro?');">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </body>
 </html>

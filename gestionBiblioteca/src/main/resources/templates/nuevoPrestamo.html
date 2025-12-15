@@ -4,28 +4,125 @@
 <head>
     <meta charset="UTF-8">
     <title>Nuevo Préstamo</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        form {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        select:focus {
+            border-color: #e67e22;
+            box-shadow: 0 0 5px rgba(230,126,34,0.5);
+            outline: none;
+        }
+
+        button {
+            background: #e67e22;
+            color: white;
+            padding: 12px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        .volver {
+            margin-top: 20px;
+            text-decoration: none;
+            color: #fff;
+            background: #e67e22;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .volver:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 600px) {
+            form {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Registrar nuevo préstamo</h1>
-    <form th:action="@{/prestamos/guardar}" th:object="${prestamo}" method="post">
-        <label>Libro:</label>
-        <select th:field="*{libro.id}" required>
-            <option value="">-- Seleccione libro --</option>
-            <option th:each="libro : ${libros}" th:value="${libro.id}" th:text="${libro.titulo}"></option>
-        </select>
 
-        <select th:field="*{socio.id}" required>
-            <option value="">-- Seleccione socio --</option>
-            <option th:each="socio : ${socios}" th:value="${socio.id}" th:text="${socio.nombre}"></option>
-        </select>
+<h1>Registrar nuevo préstamo</h1>
 
-        <br><br>
+<form th:action="@{/prestamos/guardar}" th:object="${prestamo}" method="post">
+    <label>Libro:</label>
+    <select th:field="*{libro.id}" required>
+        <option value="">-- Seleccione libro --</option>
+        <option th:each="libro : ${libros}" th:value="${libro.id}" th:text="${libro.titulo}"></option>
+    </select>
 
-        <button type="submit">Guardar préstamo</button>
-    </form>
-    <br>
-    <a th:href="@{/prestamos}">Volver al listado de préstamos</a>
+    <label>Socio:</label>
+    <select th:field="*{socio.id}" required>
+        <option value="">-- Seleccione socio --</option>
+        <option th:each="socio : ${socios}" th:value="${socio.id}" th:text="${socio.nombre}"></option>
+    </select>
+
+    <button type="submit">Guardar préstamo</button>
+</form>
+
+<a class="volver" th:href="@{/prestamos}">Volver al listado de préstamos</a>
+
 </body>
-
 </html>

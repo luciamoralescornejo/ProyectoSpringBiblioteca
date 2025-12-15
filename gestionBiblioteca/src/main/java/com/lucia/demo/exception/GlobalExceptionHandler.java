@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(LibroNoEncontradoException.class)
     public ModelAndView handleLibroNotFound(LibroNoEncontradoException ex) {
-        ModelAndView mv = new ModelAndView("error"); // puedes crear plantilla error.html
+        ModelAndView mv = new ModelAndView("error"); 
         mv.addObject("mensaje", ex.getMessage());
         return mv;
     }

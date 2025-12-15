@@ -3,39 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <title>Socios</title>
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .buttons {
+            margin-bottom: 30px;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            color: #fff;
+            background: #e67e22;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            margin-right: 10px;
+        }
+
+        .buttons a:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        table {
+            width: 100%;
+            max-width: 900px;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        thead {
+            background: #e67e22;
+            color: white;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background: #ffe6cc;
+        }
+
+        td a {
+            color: #e67e22;
+            text-decoration: none;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            tbody tr {
+                margin-bottom: 20px;
+                background: white;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                border-radius: 10px;
+                padding: 15px;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 10px;
+            }
+
+            td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                color: #2c3e50;
+            }
+        }
+    </style>
 </head>
 <body>
 
 <h1>Lista de Socios</h1>
 
-<a th:href="@{/}">Volver al menú</a> |
-<a th:href="@{/socios/nuevo}">Nuevo Socio</a>
+<div class="buttons">
+    <a th:href="@{/}">Volver al menú</a>
+    <a th:href="@{/socios/nuevo}">Nuevo Socio</a>
+</div>
 
-<br><br>
-
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Fin Penalización</th>
-        <th>Acciones</th>
-    </tr>
-
-    <tr th:each="socio : ${socios}">
-        <td th:text="${socio.id}"></td>
-        <td th:text="${socio.nombre}"></td>
-        <td th:text="${socio.email}"></td>
-        <td th:text="${socio.finPenalizacion}"></td>
-
-        <td>
-            <a th:href="@{/socios/editar/{id}(id=${socio.id})}">Editar</a> |
-            <a th:href="@{/socios/eliminar/{id}(id=${socio.id})}"
-               onclick="return confirm('¿Seguro que quieres eliminar este socio?');">
-                Eliminar
-            </a>
-        </td>
-    </tr>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Fin Penalización</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="socio : ${socios}">
+            <td data-label="ID" th:text="${socio.id}"></td>
+            <td data-label="Nombre" th:text="${socio.nombre}"></td>
+            <td data-label="Email" th:text="${socio.email}"></td>
+            <td data-label="Fin Penalización" th:text="${socio.finPenalizacion}"></td>
+            <td data-label="Acciones">
+                <a th:href="@{/socios/editar/{id}(id=${socio.id})}">Editar</a>
+                <a th:href="@{/socios/eliminar/{id}(id=${socio.id})}"
+                   onclick="return confirm('¿Seguro que quieres eliminar este socio?');">Eliminar</a>
+            </td>
+        </tr>
+    </tbody>
 </table>
 
 </body>
