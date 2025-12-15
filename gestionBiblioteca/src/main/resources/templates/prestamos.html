@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Préstamos</title>
     <style>
-        /* Reset básico */
         * {
             margin: 0;
             padding: 0;
@@ -144,7 +143,7 @@
                 <th>Fecha inicio</th>
                 <th>Fecha fin</th>
                 <th>Estado</th>
-                <th>Eliminar</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -155,9 +154,14 @@
                 <td data-label="Fecha inicio" th:text="${prestamo.fechaPrestamo}"></td>
                 <td data-label="Fecha fin" th:text="${prestamo.fechaFin}"></td>
                 <td data-label="Estado" th:text="${prestamo.estado}"></td>
-                <td data-label="Eliminar">
-                    <a th:href="@{/prestamos/eliminar/{id}(id=${prestamo.id})}"
-                        onclick="return confirm('¿Seguro que deseas eliminar este préstamo?');">Eliminar</a>
+                <td data-label="Acciones">
+                    <!-- Mostrar botón Devolver solo si el préstamo está ACTIVO -->
+                    <a th:if="${prestamo.estado.name() == 'ACTIVO'}"
+                       th:href="@{/prestamos/devolver/{id}(id=${prestamo.id})}"
+                       onclick="return confirm('¿Deseas marcar este préstamo como devuelto?');">
+                       Devolver
+                    </a>
+                    <span th:if="${prestamo.estado.name() != 'ACTIVO'}">-</span>
                 </td>
             </tr>
         </tbody>

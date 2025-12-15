@@ -47,13 +47,6 @@ public class PrestamoService {
                         "No se ha encontrado el préstamo con id " + id));
     }
 
-    // Eliminar préstamo
-    public void eliminarPrestamo(Long id) {
-        Prestamo prestamo = obtenerPrestamoPorId(id);
-        prestamoRepository.delete(prestamo);
-    }
-
-    // Marcar préstamo como devuelto
     public void devolverPrestamo(Long id) {
         Prestamo prestamo = obtenerPrestamoPorId(id);
         prestamo.setEstado(Prestamo.Estado.DEVUELTO);

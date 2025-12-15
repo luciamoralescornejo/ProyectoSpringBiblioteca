@@ -2,14 +2,8 @@ package com.lucia.demo.modelo;
 
 import java.time.LocalDate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
-/**
- * Entidad que representa un préstamo de libro realizado por un socio.
- * Mapea la relación entre Socio y Libro con información de fechas y estado.
- * Contiene campos para fecha de préstamo, inicio, fin y estado del préstamo.
- * Incluye un enum Estado para indicar si el préstamo está activo, devuelto o
- * retrasado.
- */
 @Entity
 public class Prestamo {
 
@@ -19,14 +13,19 @@ public class Prestamo {
 
     @ManyToOne
     @JoinColumn(name = "socio_id", nullable = false)
+    @NotNull(message = "Debe seleccionar un socio")
     private Socio socio;
 
     @ManyToOne
     @JoinColumn(name = "libro_id", nullable = false)
+    @NotNull(message = "Debe seleccionar un libro")
     private Libro libro;
 
     @Column(name = "fecha_prestamo")
     private LocalDate fechaPrestamo;
+
+    @Column(name = "fecha_inicio", nullable = false)
+    private LocalDate fechaInicio;
 
     @Column(name = "fecha_fin")
     private LocalDate fechaFin;
@@ -34,9 +33,6 @@ public class Prestamo {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Estado estado;
-
-    @Column(name = "fecha_inicio", nullable = false)
-    private LocalDate fechaInicio;
 
     @PrePersist
     public void prePersist() {
@@ -48,6 +44,7 @@ public class Prestamo {
         }
     }
 
+    // ===== Enum Estado =====
     public enum Estado {
         ACTIVO, DEVUELTO, RETRASADO
     }
@@ -83,6 +80,14 @@ public class Prestamo {
 
     public void setFechaPrestamo(LocalDate fechaPrestamo) {
         this.fechaPrestamo = fechaPrestamo;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
     }
 
     public LocalDate getFechaFin() {

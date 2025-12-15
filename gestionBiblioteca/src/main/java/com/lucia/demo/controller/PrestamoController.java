@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +18,8 @@ import com.lucia.demo.service.LibroService;
 import com.lucia.demo.service.PrestamoService;
 import com.lucia.demo.service.SocioService;
 
-/**
- * Controlador para gestionar préstamos de libros.
- * Permite listar, crear y eliminar préstamos usando vistas HTML.
- * Utiliza PrestamoService, LibroService y SocioService para la lógica.
- * Se mapea con "/prestamos" y maneja formularios y redirecciones.
- */
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/prestamos")
 public class PrestamoController {
@@ -31,13 +28,6 @@ public class PrestamoController {
     private final LibroService libroService;
     private final SocioService socioService;
 
-    /**
-     * Constructor que inyecta los servicios necesarios.
-     *
-     * @param prestamoService servicio de préstamos
-     * @param libroService    servicio de libros
-     * @param socioService    servicio de socios
-     */
     public PrestamoController(
             PrestamoService prestamoService,
             LibroService libroService,
@@ -47,12 +37,6 @@ public class PrestamoController {
         this.socioService = socioService;
     }
 
-    /**
-     * Muestra la lista de todos los préstamos.
-     *
-     * @param model objeto Model para pasar datos a la vista
-     * @return vista "prestamos" con la lista de préstamos
-     */
     @GetMapping
     public String listarPrestamos(Model model) {
         List<Prestamo> prestamos = prestamoService.listarPrestamos();
@@ -60,12 +44,6 @@ public class PrestamoController {
         return "prestamos";
     }
 
-    /**
-     * Muestra el formulario para crear un nuevo préstamo.
-     *
-     * @param model objeto Model para pasar datos a la vista
-     * @return vista "nuevoPrestamo" con libros y socios disponibles
-     */
     @GetMapping("/nuevo")
     public String mostrarFormularioPrestamo(Model model) {
         model.addAttribute("prestamo", new Prestamo());
@@ -74,32 +52,31 @@ public class PrestamoController {
         return "nuevoPrestamo";
     }
 
-    /**
-     * Guarda un préstamo nuevo, asignando libro y socio reales.
-     *
-     * @param prestamo objeto Prestamo enviado desde el formulario
-     * @return redirección a "/prestamos"
-     */
     @PostMapping("/guardar")
-    public String guardarPrestamo(@ModelAttribute Prestamo prestamo) {
+    public String guardarPrestamo(
+            @Valid @ModelAttribute Prestamo prestamo,
+            BindingResult result,
+            Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("libros", libroService.listarLibros());
+            model.addAttribute("socios", socioService.listarSocios());
+            return "nuevoPrestamo";
+        }
+
         Libro libro = libroService.obtenerLibroPorId(prestamo.getLibro().getId());
         Socio socio = socioService.obtenerSocioPorId(prestamo.getSocio().getId());
         prestamo.setLibro(libro);
         prestamo.setSocio(socio);
         prestamo.setEstado(Prestamo.Estado.ACTIVO);
         prestamoService.guardarPrestamo(prestamo);
+
         return "redirect:/prestamos";
     }
 
-    /**
-     * Elimina un préstamo existente.
-     *
-     * @param id id del préstamo a eliminar
-     * @return redirección a "/prestamos"
-     */
-    @GetMapping("/eliminar/{id}")
-    public String eliminarPrestamo(@PathVariable Long id) {
-        prestamoService.eliminarPrestamo(id);
+    @GetMapping("/devolver/{id}")
+    public String devolverPrestamo(@PathVariable Long id) {
+        prestamoService.devolverPrestamo(id);
         return "redirect:/prestamos";
     }
 }

@@ -104,8 +104,6 @@
 
 <h1 th:text="${socio.id == null ? 'Nuevo Socio' : 'Editar Socio'}"></h1>
 
-<a class="volver" th:href="@{/socios}">Volver</a><br>
-
 <form th:action="@{/socios/guardar}" th:object="${socio}" method="post">
     <input type="hidden" th:field="*{id}" />
 
@@ -120,6 +118,7 @@
 
     <button type="submit">Guardar</button>
 </form>
+<a class="volver" th:href="@{/socios}">Volver</a><br>
 
 </body>
 </html>
