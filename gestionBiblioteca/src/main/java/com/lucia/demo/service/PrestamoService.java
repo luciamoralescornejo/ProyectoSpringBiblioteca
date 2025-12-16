@@ -23,6 +23,11 @@ public class PrestamoService {
         return prestamoRepository.findAll();
     }
 
+    // Listar préstamos por socio (ACTIVOS + DEVUELTOS + RETRASADOS)
+    public List<Prestamo> listarPrestamosPorSocio(Long socioId) {
+        return prestamoRepository.findBySocioId(socioId);
+    }
+
     // Guardar o actualizar préstamo
     public Prestamo guardarPrestamo(Prestamo prestamo) {
         if (prestamo == null) {
@@ -47,6 +52,7 @@ public class PrestamoService {
                         "No se ha encontrado el préstamo con id " + id));
     }
 
+    // Devolver préstamo
     public void devolverPrestamo(Long id) {
         Prestamo prestamo = obtenerPrestamoPorId(id);
         prestamo.setEstado(Prestamo.Estado.DEVUELTO);

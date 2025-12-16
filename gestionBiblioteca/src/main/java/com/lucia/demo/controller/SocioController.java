@@ -11,7 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/socios") // Solo para vistas web
+@RequestMapping("/socios")
 public class SocioController {
 
     private final SocioService socioService;

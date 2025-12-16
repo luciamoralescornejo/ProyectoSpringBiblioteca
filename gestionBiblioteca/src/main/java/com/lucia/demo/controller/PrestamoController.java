@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.lucia.demo.modelo.Libro;
 import com.lucia.demo.modelo.Prestamo;
@@ -38,9 +39,22 @@ public class PrestamoController {
     }
 
     @GetMapping
-    public String listarPrestamos(Model model) {
-        List<Prestamo> prestamos = prestamoService.listarPrestamos();
+    public String listarPrestamos(
+            @RequestParam(required = false) Long socioId,
+            Model model) {
+
+        List<Prestamo> prestamos;
+
+        if (socioId != null) {
+            prestamos = prestamoService.listarPrestamosPorSocio(socioId);
+        } else {
+            prestamos = prestamoService.listarPrestamos();
+        }
+
         model.addAttribute("prestamos", prestamos);
+        model.addAttribute("socios", socioService.listarSocios());
+        model.addAttribute("socioSeleccionado", socioId);
+
         return "prestamos";
     }
 
@@ -66,9 +80,11 @@ public class PrestamoController {
 
         Libro libro = libroService.obtenerLibroPorId(prestamo.getLibro().getId());
         Socio socio = socioService.obtenerSocioPorId(prestamo.getSocio().getId());
+
         prestamo.setLibro(libro);
         prestamo.setSocio(socio);
         prestamo.setEstado(Prestamo.Estado.ACTIVO);
+
         prestamoService.guardarPrestamo(prestamo);
 
         return "redirect:/prestamos";

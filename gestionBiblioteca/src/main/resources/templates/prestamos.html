@@ -29,7 +29,7 @@
         }
 
         .buttons {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .buttons a {
@@ -46,6 +46,29 @@
         .buttons a:hover {
             background: #d35400;
             transform: translateY(-2px);
+        }
+
+        .filter {
+            margin-bottom: 25px;
+        }
+
+        .filter select,
+        .filter button {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .filter button {
+            background: #e67e22;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .filter button:hover {
+            background: #d35400;
         }
 
         table {
@@ -87,41 +110,6 @@
         td a:hover {
             text-decoration: underline;
         }
-
-        @media (max-width: 768px) {
-            table,
-            thead,
-            tbody,
-            th,
-            td,
-            tr {
-                display: block;
-            }
-
-            thead tr {
-                display: none;
-            }
-
-            tbody tr {
-                margin-bottom: 20px;
-                background: white;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-                border-radius: 10px;
-                padding: 15px;
-            }
-
-            td {
-                display: flex;
-                justify-content: space-between;
-                padding: 8px 10px;
-            }
-
-            td::before {
-                content: attr(data-label);
-                font-weight: bold;
-                color: #2c3e50;
-            }
-        }
     </style>
 </head>
 
@@ -133,6 +121,18 @@
         <a th:href="@{/}">Volver al menú</a>
         <a th:href="@{/prestamos/nuevo}">Nuevo registro</a>
     </div>
+
+    <form class="filter" method="get" th:action="@{/prestamos}">
+        <select name="socioId">
+            <option value="">-- Selecciona un socio --</option>
+            <option th:each="s : ${socios}"
+                    th:value="${s.id}"
+                    th:text="${s.nombre}"
+                    th:selected="${s.id == socioSeleccionado}">
+            </option>
+        </select>
+        <button type="submit">Buscar</button>
+    </form>
 
     <table>
         <thead>
@@ -148,14 +148,13 @@
         </thead>
         <tbody>
             <tr th:each="prestamo : ${prestamos}">
-                <td data-label="ID" th:text="${prestamo.id}"></td>
-                <td data-label="Libro" th:text="${prestamo.libro.titulo}"></td>
-                <td data-label="Socio" th:text="${prestamo.socio.nombre}"></td>
-                <td data-label="Fecha inicio" th:text="${prestamo.fechaPrestamo}"></td>
-                <td data-label="Fecha fin" th:text="${prestamo.fechaFin}"></td>
-                <td data-label="Estado" th:text="${prestamo.estado}"></td>
-                <td data-label="Acciones">
-                    <!-- Mostrar botón Devolver solo si el préstamo está ACTIVO -->
+                <td th:text="${prestamo.id}"></td>
+                <td th:text="${prestamo.libro.titulo}"></td>
+                <td th:text="${prestamo.socio.nombre}"></td>
+                <td th:text="${prestamo.fechaPrestamo}"></td>
+                <td th:text="${prestamo.fechaFin}"></td>
+                <td th:text="${prestamo.estado}"></td>
+                <td>
                     <a th:if="${prestamo.estado.name() == 'ACTIVO'}"
                        th:href="@{/prestamos/devolver/{id}(id=${prestamo.id})}"
                        onclick="return confirm('¿Deseas marcar este préstamo como devuelto?');">
@@ -168,5 +167,4 @@
     </table>
 
 </body>
-
 </html>

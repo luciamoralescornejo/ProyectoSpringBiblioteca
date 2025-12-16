@@ -7,18 +7,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-/**
- * Manejador global de excepciones para la aplicación.
- * Gestiona errores tanto para clientes MVC como REST,
- * diferenciándolos mediante la cabecera Accept.
- */
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    /**
-     * Maneja la excepción LibroNoEncontradoException.
-     * Devuelve una vista para MVC o ResponseEntity para REST.
-     */
     @ExceptionHandler(LibroNoEncontradoException.class)
     public Object handleLibroNoEncontrado(
             LibroNoEncontradoException ex,
